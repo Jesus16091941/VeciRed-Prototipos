@@ -72,7 +72,7 @@
   <div class="relative inline-block">
     <button id="btnSelectorUbicacion" class="group flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-full hover:bg-surface-container transition-colors text-left cursor-pointer" type="button">
       <span class="material-symbols-outlined text-secondary text-[18px]">location_on</span>
-      <span class="font-label-md text-label-md text-on-surface">Tu Barrio: <strong id="textoUbicacionActual" class="text-primary font-bold">Los Laureles / Envigado</strong></span>
+      <span class="font-label-md text-label-md text-on-surface">Tu Barrio: <strong id="textoUbicacionActual" class="text-primary font-bold">Detectando ubicación...</strong></span>
       <span class="font-label-sm text-label-sm text-secondary underline decoration-secondary ml-1 group-hover:text-primary">Cambiar</span>
     </button>
 
@@ -820,24 +820,9 @@
   const inputUbicacionLibre = document.getElementById('inputUbicacionLibre');
   const btnGuardarUbicacion = document.getElementById('btnGuardarUbicacion');
 
-  // Abrir / Cerrar el menú flotante al hacer clic en el botón "Cambiar" o el bloque
-  btnSelectorUbicacion.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdownUbicacion.classList.toggle('hidden');
-  });
-
-  // Cerrar si hace clic fuera
-  window.addEventListener('click', (e) => {
-    if (!dropdownUbicacion.contains(e.target) && e.target !== btnSelectorUbicacion) {
-      dropdownUbicacion.classList.add('hidden');
-    }
-  });
-
-  // 1. Funcionalidad: Usar GPS del dispositivo
-  btnUsarGPS.addEventListener('click', () => {
+  // Función reutilizable para obtener el GPS
+  const obtenerUbicacionGPS = () => {
     textoUbicacionActual.textContent = "Obteniendo ubicación...";
-    dropdownUbicacion.classList.add('hidden');
-
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
@@ -856,14 +841,37 @@
           textoUbicacionActual.textContent = "Ubicación GPS activa";
         }
       }, () => {
-        textoUbicacionActual.textContent = "Permiso denegado / GPS no disponible";
+        textoUbicacionActual.textContent = "Santiago / Chile"; // Valor por defecto si deniega el GPS
       });
     } else {
       textoUbicacionActual.textContent = "Geolocalización no soportada";
     }
+  };
+
+  // 🚀 DISPARAR GPS AUTOMÁTICAMENTE AL CARGAR LA PÁGINA
+  window.addEventListener('DOMContentLoaded', () => {
+    obtenerUbicacionGPS();
   });
 
-  // 2. Funcionalidad: Elegir ubicación libremente por texto
+  // Abrir / Cerrar el menú flotante
+  btnSelectorUbicacion.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdownUbicacion.classList.toggle('hidden');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (!dropdownUbicacion.contains(e.target) && e.target !== btnSelectorUbicacion) {
+      dropdownUbicacion.classList.add('hidden');
+    }
+  });
+
+  // Botón manual dentro del menú para volver a forzar el GPS
+  btnUsarGPS.addEventListener('click', () => {
+    dropdownUbicacion.classList.add('hidden');
+    obtenerUbicacionGPS();
+  });
+
+  // Escribir ubicación libremente por texto
   const guardarTextoLibre = () => {
     const valor = inputUbicacionLibre.value.trim();
     if (valor) {
