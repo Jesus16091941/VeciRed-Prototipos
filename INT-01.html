@@ -68,15 +68,38 @@
 <div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-xl flex flex-col gap-space-md mt-space-xs relative">
 <!-- Context Location Trigger -->
 <div class="flex items-center justify-between pb-space-xs">
-<button class="group flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-full hover:bg-surface-container transition-colors text-left" type="button">
-<span class="material-symbols-outlined text-secondary text-[18px]">location_on</span>
-<span class="font-label-md text-label-md text-on-surface">📍 Tu Barrio: <strong class="text-primary font-bold">Los Laureles / Envigado</strong></span>
-<span class="font-label-sm text-label-sm text-secondary underline decoration-secondary ml-1 group-hover:text-primary">Cambiar</span>
-</button>
-<div class="hidden sm:flex items-center gap-space-2xs text-secondary font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-[16px]">verified</span>
-<span>Identidad validada por cédula</span>
-</div>
+  <!-- Contenedor relativo para el botón y el selector de ubicación -->
+  <div class="relative inline-block">
+    <button id="btnSelectorUbicacion" class="group flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-2xs rounded-full hover:bg-surface-container transition-colors text-left cursor-pointer" type="button">
+      <span class="material-symbols-outlined text-secondary text-[18px]">location_on</span>
+      <span class="font-label-md text-label-md text-on-surface">Tu Barrio: <strong id="textoUbicacionActual" class="text-primary font-bold">Los Laureles / Envigado</strong></span>
+      <span class="font-label-sm text-label-sm text-secondary underline decoration-secondary ml-1 group-hover:text-primary">Cambiar</span>
+    </button>
+
+    <!-- Menú flotante para elegir ubicación (oculto por defecto) -->
+    <div id="dropdownUbicacion" class="hidden absolute left-0 mt-2 w-72 bg-surface-container-lowest border border-outline-variant/60 rounded-xl shadow-lg p-3 z-50 flex flex-col gap-2">
+      <span class="font-label-sm text-on-surface-variant font-semibold">Selecciona tu ubicación:</span>
+      
+      <!-- Opción 1: Usar GPS del dispositivo -->
+      <button id="btnUsarGPS" class="w-full text-left px-3 py-2 text-body-sm text-primary bg-surface-container-low hover:bg-surface-container rounded-lg transition-colors flex items-center gap-2 font-medium cursor-pointer" type="button">
+        <span class="material-symbols-outlined text-[18px] text-secondary">my_location</span> Usar mi ubicación actual (GPS)
+      </button>
+
+      <div class="border-t border-outline-variant/30 my-1"></div>
+
+      <!-- Opción 2: Escribir o elegir libremente -->
+      <label class="font-label-sm text-on-surface-variant">O escribe tu comuna / sector:</label>
+      <div class="flex gap-1">
+        <input id="inputUbicacionLibre" type="text" placeholder="Ej: Providencia, Santiago..." class="w-full px-3 py-1.5 text-body-sm border border-outline-variant/60 rounded-lg bg-surface focus:outline-none focus:border-primary text-on-surface">
+        <button id="btnGuardarUbicacion" class="bg-primary text-on-primary px-3 py-1.5 text-body-sm rounded-lg hover:opacity-90 font-medium cursor-pointer" type="button">Ok</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden sm:flex items-center gap-space-2xs text-secondary font-label-sm text-label-sm">
+    <span class="material-symbols-outlined text-[16px]">verified</span>
+    <span>Identidad validada por cédula</span>
+  </div>
 </div>
 <!-- Natural Language Search Bar -->
 <div class="relative flex flex-col sm:flex-row items-stretch gap-space-xs bg-surface-container-low p-1.5 rounded-lg focus-within:bg-surface-container transition-colors">
@@ -786,6 +809,73 @@
     } else {
       spanUbicacion.textContent = "Geolocalización no soportada";
     }
+  });
+</script>
+
+<script>
+  const btnSelectorUbicacion = document.getElementById('btnSelectorUbicacion');
+  const dropdownUbicacion = document.getElementById('dropdownUbicacion');
+  const textoUbicacionActual = document.getElementById('textoUbicacionActual');
+  const btnUsarGPS = document.getElementById('btnUsarGPS');
+  const inputUbicacionLibre = document.getElementById('inputUbicacionLibre');
+  const btnGuardarUbicacion = document.getElementById('btnGuardarUbicacion');
+
+  // Abrir / Cerrar el menú flotante al hacer clic en el botón "Cambiar" o el bloque
+  btnSelectorUbicacion.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdownUbicacion.classList.toggle('hidden');
+  });
+
+  // Cerrar si hace clic fuera
+  window.addEventListener('click', (e) => {
+    if (!dropdownUbicacion.contains(e.target) && e.target !== btnSelectorUbicacion) {
+      dropdownUbicacion.classList.add('hidden');
+    }
+  });
+
+  // 1. Funcionalidad: Usar GPS del dispositivo
+  btnUsarGPS.addEventListener('click', () => {
+    textoUbicacionActual.textContent = "Obteniendo ubicación...";
+    dropdownUbicacion.classList.add('hidden');
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        try {
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=14&addressdetails=1`, {
+            headers: { 'Accept-Language': 'es' }
+          });
+          const data = await response.json();
+          if (data && data.address) {
+            const barrio = data.address.suburb || data.address.neighbourhood || data.address.city || 'Mi ubicación';
+            const ciudad = data.address.city || data.address.town || '';
+            textoUbicacionActual.textContent = ciudad ? `${barrio} / ${ciudad}` : barrio;
+          }
+        } catch (error) {
+          textoUbicacionActual.textContent = "Ubicación GPS activa";
+        }
+      }, () => {
+        textoUbicacionActual.textContent = "Permiso denegado / GPS no disponible";
+      });
+    } else {
+      textoUbicacionActual.textContent = "Geolocalización no soportada";
+    }
+  });
+
+  // 2. Funcionalidad: Elegir ubicación libremente por texto
+  const guardarTextoLibre = () => {
+    const valor = inputUbicacionLibre.value.trim();
+    if (valor) {
+      textoUbicacionActual.textContent = valor;
+      dropdownUbicacion.classList.add('hidden');
+      inputUbicacionLibre.value = '';
+    }
+  };
+
+  btnGuardarUbicacion.addEventListener('click', guardarTextoLibre);
+  inputUbicacionLibre.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') guardarTextoLibre();
   });
 </script>
 </body></html>
