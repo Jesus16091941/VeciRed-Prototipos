@@ -164,53 +164,55 @@
 </div>
 <!-- Hyperlocal Dynamic Map & Radius Radar Card (lg:col-span-4) -->
 <div class="lg:col-span-4 flex flex-col gap-space-md">
-<div class="bg-primary-container text-on-primary p-space-xl rounded-xl shadow-xl flex flex-col gap-space-md relative overflow-hidden">
-<!-- Decorative Radar Glow -->
-<div class="absolute -top-12 -right-12 w-48 h-48 bg-secondary/20 rounded-full blur-3xl pointer-events-none"></div>
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-space-2xs">
-<span class="material-symbols-outlined text-secondary-fixed text-[20px]">radar</span>
-<span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider">Radar de Barrio</span>
+  <div class="bg-primary-container text-on-primary p-space-xl rounded-xl shadow-xl flex flex-col gap-space-md relative overflow-hidden">
+    <!-- Decorative Radar Glow -->
+    <div class="absolute -top-12 -right-12 w-48 h-48 bg-secondary/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-space-2xs">
+        <span class="material-symbols-outlined text-secondary-fixed text-[20px]">radar</span>
+        <span class="font-label-sm text-label-sm text-secondary-fixed uppercase tracking-wider">Radar de Barrio</span>
+      </div>
+      <span class="bg-surface-container-lowest/10 font-label-sm text-label-sm px-space-xs py-0.5 rounded-full text-surface-container-low">Radio &lt; 5.0 km</span>
+    </div>
+    <h3 class="font-headline-sm text-headline-sm text-on-primary">
+      Técnicos activos patrullando tu sector
+    </h3>
+    
+    <!-- Neighborhood Map Preview Container -->
+    <div class="w-full h-44 bg-surface-container-highest rounded-lg relative overflow-hidden shadow-inner flex items-center justify-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdBHDE9tKFwls-Uk-5fZIB0X311m3cxjQnNQh3iJzUDEQscEUkXdo7trYH96fMuJmRtwjRlU3ruR0hqUHmgUY_zkuHh6pl6daKE8NBM9XlFxUKI5xSvhjx0pJjiJgvhtr1118G6mio_RQ4eOAyIX4VXAUK_S4XWM-tuUBhwijQqpmDoeQOMYHr1BONMqMh58pRruu-dCTW2u_qAOKZeFPgtHxZ4Ix9F_fEbKYFLKhw7biXJeYgGAy4')">
+      <div class="absolute inset-0 bg-primary-container/40"></div>
+      
+      <!-- Floating Map Marker Elements -->
+      <div class="relative z-10 flex flex-col items-center gap-space-2xs">
+        <div class="flex items-center gap-space-xs bg-surface-container-lowest text-primary px-space-sm py-1 rounded-full shadow-lg">
+          <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+          <span id="textoContadorTecnicos" class="font-label-sm text-label-sm font-bold">Técnicos en tu zona</span>
+        </div>
+        <div class="flex items-center gap-1 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-md opacity-90">
+          <span class="material-symbols-outlined text-[14px]">pin_drop</span>
+          <span>A 600m de tu ubicación</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fast Live Activity Feed -->
+    <div class="flex flex-col gap-space-2xs bg-tertiary-container p-space-sm rounded-lg">
+      <div class="flex items-center justify-between text-on-tertiary-container font-label-sm text-label-sm">
+        <span>Último trabajo cerrado</span>
+        <span class="text-secondary-fixed font-bold">Hace 4 min</span>
+      </div>
+      <p class="font-body-sm text-body-sm text-surface-container-low">
+        "Reparación de breaker general en Edificio San Remo" por Lucía M. (⭐⭐⭐⭐⭐)
+      </p>
+    </div>
+
+    <!-- Enlace actualizado a INT-12.html -->
+    <a class="w-full text-center font-label-md text-label-md text-secondary-fixed hover:text-white transition-colors flex items-center justify-center gap-1 pt-space-2xs" data-path="explorar-mapa" href="INT-12.html">
+      <span>Abrir mapa de cobertura zonal</span>
+      <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+    </a>
+  </div>
 </div>
-<span class="bg-surface-container-lowest/10 font-label-sm text-label-sm px-space-xs py-0.5 rounded-full text-surface-container-low">Radio &lt; 5.0 km</span>
-</div>
-<h3 class="font-headline-sm text-headline-sm text-on-primary">
-              Técnicos activos patrullando tu sector
-            </h3>
-<!-- Neighborhood Map Preview Container -->
-<div class="w-full h-44 bg-surface-container-highest rounded-lg relative overflow-hidden shadow-inner flex items-center justify-center" data-location="Los Laureles, Envigado, Antioquia, Colombia" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdBHDE9tKFwls-Uk-5fZIB0X311m3cxjQnNQh3iJzUDEQscEUkXdo7trYH96fMuJmRtwjRlU3ruR0hqUHmgUY_zkuHh6pl6daKE8NBM9XlFxUKI5xSvhjx0pJjiJgvhtr1118G6mio_RQ4eOAyIX4VXAUK_S4XWM-tuUBhwijQqpmDoeQOMYHr1BONMqMh58pRruu-dCTW2u_qAOKZeFPgtHxZ4Ix9F_fEbKYFLKhw7biXJeYgGAy4')">
-<div class="absolute inset-0 bg-primary-container/40"></div>
-<!-- Floating Map Marker Elements -->
-<div class="relative z-10 flex flex-col items-center gap-space-2xs">
-<div class="flex items-center gap-space-xs bg-surface-container-lowest text-primary px-space-sm py-1 rounded-full shadow-lg">
-<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-<span class="font-label-sm text-label-sm font-bold">12 técnicos en Laureles</span>
-</div>
-<div class="flex items-center gap-1 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-md opacity-90">
-<span class="material-symbols-outlined text-[14px]">pin_drop</span>
-<span>A 600m Roberto D.</span>
-</div>
-</div>
-</div>
-<!-- Fast Live Activity Feed -->
-<div class="flex flex-col gap-space-2xs bg-tertiary-container p-space-sm rounded-lg">
-<div class="flex items-center justify-between text-on-tertiary-container font-label-sm text-label-sm">
-<span>Último trabajo cerrado</span>
-<span class="text-secondary-fixed font-bold">Hace 4 min</span>
-</div>
-<p class="font-body-sm text-body-sm text-surface-container-low">
-                "Reparación de breaker general en Edificio San Remo" por Lucía M. (⭐⭐⭐⭐⭐)
-              </p>
-</div>
-<a class="w-full text-center font-label-md text-label-md text-secondary-fixed hover:text-white transition-colors flex items-center justify-center gap-1 pt-space-2xs" data-path="explorar-mapa" href="#">
-<span>Abrir mapa de cobertura zonal</span>
-<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-</a>
-</div>
-</div>
-</div>
-</div>
-</section>
 <!-- VALUE PROPOSITION: Hyperlocal Trust Architecture -->
 <section class="w-full bg-surface-container-low py-space-3xl">
 <div class="max-w-container-max mx-auto px-space-lg flex flex-col gap-space-2xl">
@@ -796,6 +798,9 @@
             const barrio = data.address.suburb || data.address.neighbourhood || data.address.city || 'Mi ubicación';
             const ciudad = data.address.city || data.address.town || '';
             const ubicacionCompleta = ciudad ? `${barrio}, ${ciudad}` : barrio;
+            const spanTecnicosZona = document.getElementById('textoContadorTecnicos');
+            if (spanTecnicosZona) {spanTecnicosZona.textContent = `Técnicos activos en ${barrio || ciudad || 'tu zona'}`;
+}
 
             // Actualiza tanto el botón desplegable como la barra superior
             textoUbicacionActual.textContent = ubicacionCompleta;
