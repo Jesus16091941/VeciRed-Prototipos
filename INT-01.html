@@ -795,7 +795,7 @@
           if (data && data.address) {
             const barrio = data.address.suburb || data.address.neighbourhood || data.address.city || 'Mi ubicación';
             const ciudad = data.address.city || data.address.town || '';
-            const ubicacionCompleta = ciudad ? `${barrio} & ${ciudad}` : barrio;
+            const ubicacionCompleta = ciudad ? `${barrio} , ${ciudad}` : barrio;
 
             // Actualiza tanto el botón desplegable como la barra superior
             textoUbicacionActual.textContent = ubicacionCompleta;
